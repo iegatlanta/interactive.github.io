@@ -1,18 +1,18 @@
 function buildMetadata(sample) {
-    d3.json("samples.json").then((data) => {
-      var metadata= data.metadata;
-      var resultsarray= metadata.filter(sampleobject => sampleobject.id == sample);
-      var result= resultsarray[0]
-      var PANEL = d3.select("#sample-metadata");
-      PANEL.html("");
-      Object.entries(result).forEach(([key, value]) => {
-        PANEL.append("h6").text(`${key}: ${value}`);
-      });
-
-      // BONUS: Build the Gauge Chart
-      buildGauge(result.wfreq);
+  d3.json("samples.json").then((data) => {
+    var metadata= data.metadata;
+    var resultsarray= metadata.filter(sampleobject => sampleobject.id == sample);
+    var result= resultsarray[0]
+    var PANEL = d3.select("#sample-metadata");
+    PANEL.html("");
+    Object.entries(result).forEach(([key, value]) => {
+      PANEL.append("h6").text(`${key}: ${value}`);
     });
-  }
+
+    // BONUS: Build the Gauge Chart
+    
+  });
+}
 
 function buildCharts(sample) {
 
@@ -43,12 +43,12 @@ function buildCharts(sample) {
         marker: {
           color: ids,
           size: values,
-          }
+        }
       }
     ];
 
 
-    Plotly.plot("bubble", DataBubble, LayoutBubble);
+    Plotly.newPlot("bubble", DataBubble, LayoutBubble);
     //  Build a bar Chart
     var bar_data =[
       {
@@ -69,9 +69,7 @@ function buildCharts(sample) {
     Plotly.newPlot("bar", bar_data, barLayout);
   });
 }
-//-----------------------------------------------------------------------
- 
-//-----------------------------------------------------------------------
+
 function init() {
   // Get a reference to the dropdown select element
   var selector = d3.select("#selDataset");
@@ -98,7 +96,8 @@ function optionChanged(newSample) {
   // Get new data each time a new sample is selected
   buildCharts(newSample);
   buildMetadata(newSample);
-}
+
+};
 
 // Initialize the dashboard
 init();
